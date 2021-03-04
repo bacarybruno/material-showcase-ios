@@ -71,6 +71,7 @@ public class MaterialShowcase: UIView {
   @objc public var targetTintColor: UIColor!
   @objc public var targetHolderRadius: CGFloat = 0.0
   @objc public var targetHolderColor: UIColor!
+  @objc public var textCenterOffset: CGFloat = 0.0
   // Text
   @objc public var primaryText: String!
   @objc public var secondaryText: String!
@@ -236,6 +237,7 @@ extension MaterialShowcase {
     targetTintColor = BACKGROUND_DEFAULT_COLOR
     targetHolderColor = TARGET_HOLDER_COLOR
     targetHolderRadius = TARGET_HOLDER_RADIUS
+    textCenterOffset = TEXT_CENTER_OFFSET
     // Text
     primaryText = MaterialShowcaseInstructionView.PRIMARY_DEFAULT_TEXT
     secondaryText = MaterialShowcaseInstructionView.SECONDARY_DEFAULT_TEXT
@@ -339,7 +341,7 @@ extension MaterialShowcase {
     if UIDevice.current.userInterfaceIdiom == .pad {
       radius = 300.0
     } else {
-      radius = getOuterCircleRadius(center: center, textBounds: instructionView.frame, targetBounds: targetRippleView.frame)
+      radius = 400.0
     }
     return radius
   }
@@ -453,19 +455,19 @@ extension MaterialShowcase {
         width = backgroundView.frame.size.width - (xPosition*2)
       }
       if xPosition + width > backgroundView.frame.size.width {
-        width = width - CGFloat(xPosition/2)
+        width = backgroundView.frame.size.width - xPosition - (LABEL_MARGIN * 2)
       }
       
       if getTargetPosition(target: targetView, container: containerView) == .above {
-        yPosition = (backgroundView.frame.size.height/2) + TEXT_CENTER_OFFSET
+        yPosition = (backgroundView.frame.size.height/2) + textCenterOffset
       } else {
-        yPosition = TEXT_CENTER_OFFSET + LABEL_DEFAULT_HEIGHT * 2
+        yPosition = textCenterOffset + LABEL_DEFAULT_HEIGHT * 2
       }
     } else {
       if getTargetPosition(target: targetView, container: containerView) == .above {
         yPosition = center.y + TARGET_PADDING +  (targetView.bounds.height / 2 > targetHolderRadius ? targetView.bounds.height / 2 : targetHolderRadius)
       } else {
-        yPosition = center.y - TEXT_CENTER_OFFSET - LABEL_DEFAULT_HEIGHT * 2
+        yPosition = center.y - textCenterOffset - LABEL_DEFAULT_HEIGHT * 2
       }
       
       width = containerView.frame.width - (xPosition + xPosition)
